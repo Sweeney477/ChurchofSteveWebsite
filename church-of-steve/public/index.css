@@ -1,0 +1,13 @@
+/* Placeholder global stylesheet.
+ *
+ * This file exists because `index.html` references `/index.css`.
+ * Vite copies `public/` to the root of `dist/` during `vite build`.
+ *
+ * Add any global overrides here if needed.
+ */
+
+body {
+  margin: 0;
+}
+
+
