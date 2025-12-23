@@ -1,0 +1,7 @@
+{
+  "name": "churchofstevewebsite",
+  "private": true,
+  "scripts": {
+    "build": "npm ci --prefix church-of-steve && npm --prefix church-of-steve run build"
+  }
+}
