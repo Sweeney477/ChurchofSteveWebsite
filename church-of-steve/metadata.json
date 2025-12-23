@@ -1,0 +1,7 @@
+{
+  "name": "Church of Steve",
+  "description": "The official digital sanctuary of the Church of Steve. Join the movement of chronic relaxation, mediocre miracles, and tithing in tracks.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
