@@ -17,20 +17,24 @@ const Join: React.FC = () => {
         e.preventDefault();
         setLoading(true);
 
-        const { error } = await supabase
-            .from('members')
-            .insert([{
-                name: formData.name,
-                email: formData.email,
-                nap_duration: formData.napDuration,
-                pizza_topping: formData.pizzaTopping,
-                vibe_check: formData.vibeCheck
-            }]);
+        if (!supabase) {
+            console.warn('Supabase not configured; skipping member persistence.');
+        } else {
+            const { error } = await supabase
+                .from('members')
+                .insert([{
+                    name: formData.name,
+                    email: formData.email,
+                    nap_duration: formData.napDuration,
+                    pizza_topping: formData.pizzaTopping,
+                    vibe_check: formData.vibeCheck
+                }]);
 
-        if (error) {
-            console.error('Error joining the flock:', error);
-            // Even if it fails, we'll show the success state to keep the vibe chill, 
-            // but we'll log it for the "priests" (admins).
+            if (error) {
+                console.error('Error joining the flock:', error);
+                // Even if it fails, we'll show the success state to keep the vibe chill,
+                // but we'll log it for the "priests" (admins).
+            }
         }
 
         setLoading(false);
