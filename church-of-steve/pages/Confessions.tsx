@@ -9,6 +9,11 @@ const Confessions: React.FC = () => {
     const [wallOfSins, setWallOfSins] = useState<any[]>([]);
 
     const fetchSins = async () => {
+        if (!supabase) {
+            console.warn('Supabase not configured; skipping Wall of Sins fetch.');
+            return;
+        }
+
         const { data, error } = await supabase
             .from('confessions')
             .select('*')
@@ -33,23 +38,32 @@ const Confessions: React.FC = () => {
         setResponse(res);
 
         // Add to Supabase
-        const { error } = await supabase
-            .from('confessions')
-            .insert([{
-                sin: confession,
-                penance: res
-            }]);
-
-        if (error) {
-            console.error('Error saving confession:', error);
-            // Fallback to local state if Supabase fails
+        if (!supabase) {
+            // Fallback to local state if Supabase isn't configured
             setWallOfSins(prev => [{
                 id: Date.now(),
                 sin: confession,
                 penance: res
             }, ...prev].slice(0, 10));
         } else {
-            fetchSins(); // Refresh from DB
+            const { error } = await supabase
+                .from('confessions')
+                .insert([{
+                    sin: confession,
+                    penance: res
+                }]);
+
+            if (error) {
+                console.error('Error saving confession:', error);
+                // Fallback to local state if Supabase fails
+                setWallOfSins(prev => [{
+                    id: Date.now(),
+                    sin: confession,
+                    penance: res
+                }, ...prev].slice(0, 10));
+            } else {
+                fetchSins(); // Refresh from DB
+            }
         }
 
         setLoading(false);

@@ -14,15 +14,19 @@ const Home: React.FC = () => {
     setResponse(res);
 
     // Persist to Supabase
-    const { error } = await supabase
-      .from('confessions')
-      .insert([{
-        sin: confession,
-        penance: res
-      }]);
+    if (!supabase) {
+      console.warn('Supabase not configured; skipping confession persistence.');
+    } else {
+      const { error } = await supabase
+        .from('confessions')
+        .insert([{
+          sin: confession,
+          penance: res
+        }]);
 
-    if (error) {
-      console.error('Error saving confession to Supabase:', error);
+      if (error) {
+        console.error('Error saving confession to Supabase:', error);
+      }
     }
 
     setLoading(false);

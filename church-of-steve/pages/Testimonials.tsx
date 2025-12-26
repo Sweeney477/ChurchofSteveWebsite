@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { sanity } from '../lib/sanity';
 import imageUrlBuilder from '@sanity/image-url';
 
-const builder = imageUrlBuilder(sanity);
+const builder = sanity ? imageUrlBuilder(sanity) : null;
 function urlFor(source: any) {
-  return builder.image(source);
+  return builder ? builder.image(source) : null;
 }
 
 const Testimonials: React.FC = () => {
@@ -14,6 +14,10 @@ const Testimonials: React.FC = () => {
   useEffect(() => {
     const fetchMiracles = async () => {
       try {
+        if (!sanity) {
+          console.warn('Sanity not configured; skipping miracles fetch.');
+          return;
+        }
         const data = await sanity.fetch(`*[_type == "miracle"]`);
         setMiracles(data);
       } catch (error) {
@@ -52,7 +56,11 @@ const Testimonials: React.FC = () => {
                   {miracle.content}
                 </p>
                 <div className="flex items-center gap-4 border-t pt-8 mt-auto">
-                  <img src={miracle.image ? urlFor(miracle.image).url() : "https://via.placeholder.com/100"} alt={miracle.author} className="w-16 h-16 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                  <img
+                    src={miracle.image && urlFor(miracle.image) ? urlFor(miracle.image)!.url() : "https://via.placeholder.com/100"}
+                    alt={miracle.author}
+                    className="w-16 h-16 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                  />
                   <div>
                     <h4 className="font-bold text-gray-900">{miracle.author}</h4>
                     <p className="text-xs text-gray-500 uppercase tracking-widest">{miracle.role}</p>

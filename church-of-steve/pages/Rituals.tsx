@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { sanity } from '../lib/sanity';
 import imageUrlBuilder from '@sanity/image-url';
 
-const builder = imageUrlBuilder(sanity);
+const builder = sanity ? imageUrlBuilder(sanity) : null;
 function urlFor(source: any) {
-  return builder.image(source);
+  return builder ? builder.image(source) : null;
 }
 
 const Rituals: React.FC = () => {
@@ -14,6 +14,10 @@ const Rituals: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
+        if (!sanity) {
+          console.warn('Sanity not configured; skipping events fetch.');
+          return;
+        }
         const data = await sanity.fetch(`*[_type == "event"] | order(date asc)`);
         setEvents(data);
       } catch (error) {
@@ -56,7 +60,11 @@ const Rituals: React.FC = () => {
               events.map((event) => (
                 <div key={event._id} className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 group flex flex-col">
                   <div className="h-56 overflow-hidden relative">
-                    <img src={event.image ? urlFor(event.image).url() : "https://images.unsplash.com/photo-1516383748821-653a995e8616?q=80&w=1000&auto=format&fit=crop"} alt={event.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <img
+                      src={event.image && urlFor(event.image) ? urlFor(event.image)!.url() : "https://images.unsplash.com/photo-1516383748821-653a995e8616?q=80&w=1000&auto=format&fit=crop"}
+                      alt={event.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
                     <div className="absolute top-4 right-4 bg-primary text-white font-display text-center px-4 py-2 rounded shadow-lg">
                       <div className="text-xs uppercase tracking-widest opacity-80">{event.month}</div>
                       <div className="text-3xl font-bold leading-none">{event.date}</div>
