@@ -58,7 +58,7 @@ const Beliefs: React.FC = () => {
 
         <div className="bg-secondary p-8 rounded shadow-xl transform hover:-translate-y-2 transition duration-300 border-t-4 border-primary">
           <span className="material-icons text-primary text-6xl mb-6 block transform rotate-12">library_music</span>
-          <h3 className="font-display text-3xl text-gray-800 uppercase mb-4 tracking-tight">Tithing in Tracks</h3>
+          <h3 className="font-display text-3xl text-gray-800 uppercase mb-4 tracking-tight">Think in Tracks</h3>
           <p className="text-gray-600 text-lg leading-relaxed">We don't want 10% of your income. We want 10% of your Spotify playlists. A good beat saves more souls than a sermon.</p>
         </div>
 
