@@ -18,3 +18,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/1nrJkN3tgKgv74SHrBFllX3
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+## Sanity CMS
+
+The site pulls dynamic content (tenets, testimonials, shop, events, gallery) from Sanity. To edit content or add new items, see `SANITY_SETUP.md` for environment variables and Studio usage. The Studio lives in `church-of-steve-cms/` and points at project `hjme0fev`.
